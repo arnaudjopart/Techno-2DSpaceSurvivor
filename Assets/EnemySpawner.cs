@@ -7,7 +7,7 @@ public class EnemySpawner : MonoBehaviour
 {
     [SerializeField] private List<GameObject> m_currentSpawnPool;
     private Transform m_target;
-    private float m_spawnDelay=5;
+    [SerializeField] private float m_spawnDelay=1;
     private float m_spawnTimer=5;
     [SerializeField] private float m_spawnDistance = 20;
 

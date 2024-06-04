@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 [RequireComponent (typeof(Rigidbody2D))]
-public class TransformRoateAndPhysicThrustPlayerController : PlayerControllerBase
+public class TransformRotateAndPhysicThrustPlayerController : PlayerControllerBase
 {
     private Rigidbody2D m_rigidBody;
     private float m_xMoveData;
@@ -9,7 +9,7 @@ public class TransformRoateAndPhysicThrustPlayerController : PlayerControllerBas
 
     [Header("Physic parameters")]
     [SerializeField] private float m_rotationSpeed;
-    [SerializeField] private float m_thurst;
+    [SerializeField] private float m_thrust=5f;
     [SerializeField] private float m_maxVelocity;
 
     private void Awake()
@@ -19,7 +19,7 @@ public class TransformRoateAndPhysicThrustPlayerController : PlayerControllerBas
     public override void ProcessAxisData(Vector2 _moveVector)
     {
         m_xMoveData = _moveVector.x;
-        transform.Rotate(0, 0, -m_xMoveData*m_rotationSpeed * Time.deltaTime);
+        
         m_yMoveData = _moveVector.y > 0 ? _moveVector.y : 0;
 
     }
@@ -27,7 +27,9 @@ public class TransformRoateAndPhysicThrustPlayerController : PlayerControllerBas
 
     private void FixedUpdate()
     {
-        m_rigidBody.AddForce(transform.up * m_yMoveData * m_thurst);
+        print(m_rigidBody.velocity.magnitude);
+        transform.rotation *= Quaternion.Euler(0, 0, -m_xMoveData*m_rotationSpeed * Time.deltaTime);
+        m_rigidBody.AddForce(transform.up * (m_yMoveData * m_thrust));
         if(m_rigidBody.velocity.magnitude > m_maxVelocity) 
         {
             m_rigidBody.velocity = m_rigidBody.velocity.normalized*m_maxVelocity;

@@ -27,11 +27,12 @@ public class InputManager : MonoBehaviour
     {
         if (m_playerController == null) return;
 
-        var movementOnX = Input.GetAxis("Horizontal");
-        var movementOnY = Input.GetAxis("Vertical");
+        var movementOnX = Input.GetAxisRaw("Horizontal");
+        var movementOnY = Input.GetAxisRaw("Vertical");
 
         var moveVector = new Vector2(movementOnX, movementOnY).normalized;
 
+        print(movementOnX);
         m_playerController.ProcessAxisData(moveVector);
 
         var mousePosition = Input.mousePosition;

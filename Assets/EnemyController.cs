@@ -6,7 +6,7 @@ internal class EnemyController : MonoBehaviour
     private Transform m_target;
     [SerializeField] private float m_speed = 5;
     [SerializeField] private LayerMask m_layerMask;
-    private float m_avoidanceDistance=.2f;
+    [SerializeField] private float m_avoidanceDistance=.2f;
 
     public void SetTarget(Transform _target)
     {
@@ -23,12 +23,19 @@ internal class EnemyController : MonoBehaviour
         Vector3 avoidanceVector = Vector2.zero;
         foreach (var collider in nearbyColliders)
         {
-            print(nearbyColliders.Length);
+           // print(nearbyColliders.Length);
             var neighbourgVector = -(collider.transform.position - transform.position).normalized;
-            avoidanceVector += neighbourgVector*m_avoidanceDistance;
+            avoidanceVector += neighbourgVector;
+            avoidanceVector = avoidanceVector.normalized*m_avoidanceDistance;
+            
         }
         normalizedDirection += avoidanceVector;
 
-        transform.position += normalizedDirection * m_speed * Time.deltaTime;
+        transform.position += normalizedDirection * (m_speed * Time.deltaTime);
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        GetComponent<Rigidbody2D>().AddForce( other.gameObject.transform.up*3,ForceMode2D.Impulse);
     }
 }
